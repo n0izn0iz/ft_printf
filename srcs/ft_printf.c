@@ -1,88 +1,68 @@
+#include <stdarg.h>
 #include "libft.h"
 #include "ft_printf.h"
-#include <stdarg.h>
 
-
-void	ft_putoctal(int octal)
+int 	count_specifiers(const char *str)
 {
-	if (octal > 8)
+	int count;
+
+	count = 0;
+	while (*str)
 	{
-		ft_putoctal(octal / 8);
-		ft_putchar((octal % 8) + '0');
+		if (*str == '%')
+		{
+			count++;
+			if (*(str + 1) != '\0')
+				str++;
+		}
+		str++;
 	}
-	else
-		ft_putchar(octal + '0');
+	return (count);
 }
 
-int 	split_args(const char *str, va_list *valist, t_printf_args *args)
+static void		print(t_printf_args *args)
 {
-	int 	strstart;
-	int index;
-	int i;
-
-	i = 0;
-	index = 0;
-	strstart = 0;
-	while (str[i] != '\0')
+	int j;
+	j = 0;
+	ft_putstr(args->strings[j]);
+	while(j < args->spec_count)
 	{
-		if (str[i] == '%')
+		if (args->data[j].type == T_INT)
 		{
-			args->strings[index] = ft_strsub(str, strstart, i - strstart);
-			if (str[++i] == 'd')
-			{
-				args->types[index] = T_INT;
-				args->vars[index].i = va_arg(*valist, int);
-			}
-			else if (str[i] == 'u')
-			{
-				args->types[index] = T_UINT;
-				args->vars[index].ui = va_arg(*valist, unsigned int);
-			}
-			else if (str[i] == 's')
-			{
-				args->types[index] = T_STR;
-				args->vars[index].str = va_arg(*valist, char*);
-			}
-			else if (str[i] == 'o')
-			{
-				args->types[index] = T_OCT;
-				args->vars[index].ui = va_arg(*valist, unsigned int);
-			}
-			strstart = i + 1;
-			++index;
+			if (args->data[j].flags.len_mod == LM_HH)
+				args->data[j].var.i = (char)args->data[j].var.i;
+			ft_putnbr(args->data[j].var.i);
 		}
-		++i;
+		else if (args->data[j].type == T_UINT)
+			ft_putnbr(args->data[j].var.ui);
+		else if (args->data[j].type == T_STR)
+			ft_putstr(args->data[j].var.str);
+		else if (args->data[j].type == T_OCT)
+			ft_putoctal(args->data[j].var.ui, args->data[j].flags.sharp);
+		else if (args->data[j].type == T_VOID)
+			ft_puthex((size_t)(args->data[j].var.vp), 1, 0);
+		else if (args->data[j].type == T_HEX)
+			ft_puthex(args->data[j].var.ui, args->data[j].flags.sharp, args->data[j].flags.caps);
+		else if (args->data[j].type == T_CHAR)
+			ft_putchar(args->data[j].var.c);
+		else if (args->data[j].type == T_PERCENT)
+			ft_putchar('%');
+		ft_putstr(args->strings[j + 1]);
+		j++;
 	}
-	args->strings[index] = ft_strsub(str, strstart, i - strstart);
-	return (index);
 }
 
 int		ft_printf(const char * format, ...)
 {
 	va_list			valist;
 	t_printf_args	args;
-	int 			j;
 
+	args.spec_count = count_specifiers(format);
 	args.strings = (char**)ft_memalloc(sizeof(char*) * (args.spec_count + 1 + 1));
-	args.types = (t_typevar*)ft_memalloc(sizeof(t_typevar) * (args.spec_count + 1));
-	args.vars = (t_typeunion*)ft_memalloc(sizeof(t_typeunion) * (args.spec_count + 1));
+	args.data = (t_printf_var*)ft_memalloc(sizeof(t_printf_var) * (args.spec_count + 1));
 	va_start(valist, format);
-	args.spec_count = split_args(format, &valist, &args);
+	split_args(format, &valist, &args);
 	va_end(valist);
-	j = 0;
-	ft_putstr(args.strings[j]);
-	while(j < args.spec_count)
-	{
-		if (args.types[j] == T_INT)
-			ft_putnbr(args.vars[j].i);
-		if (args.types[j] == T_UINT)
-			ft_putnbr(args.vars[j].ui);
-		if (args.types[j] == T_STR)
-			ft_putstr(args.vars[j].str);
-		if (args.types[j] == T_OCT)
-			ft_putoctal(args.vars[j].ui);
-		ft_putstr(args.strings[j + 1]);
-		j++;
-	}
+	print(&args);
 	return (0);
 }
