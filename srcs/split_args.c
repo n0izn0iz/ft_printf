@@ -29,40 +29,38 @@ int 	fill_flags(const char *str, t_spec_flags *flags)
 
 int 	fill_lenght(const char *str, t_spec_flags *flags)
 {
-	int i;
-
-	i = 0;
-	while (str[i])
+	if (str[0] == 'h')
 	{
-		if (str[i] == 'h')
+		if (str[1] == 'h')
 		{
-			if (str[i + 1] == 'h')
-			{
-				i++;
-				flags->len_mod = LM_HH;
-			}
-			else
-				flags->len_mod = LM_H;
+			flags->len_mod = LM_HH;
+			return (2);
 		}
-		else if (str[i] == 'l')
-		{
-			if (str[i + 1] == 'l')
-			{
-				i++;
-				flags->len_mod = LM_LL;
-			}
-			else
-				flags->len_mod = LM_L;
-		}
-		else if (str[i] == 'j')
-			flags->len_mod = LM_J;
-		else if (str[i] == 'z')
-			flags->len_mod = LM_Z;
-		else
-			break ;
-		i++;
+		flags->len_mod = LM_H;
+		return (1);
+		
 	}
-	return i;
+	else if (str[0] == 'l')
+	{
+		if (str[1] == 'l')
+		{
+			flags->len_mod = LM_LL;
+			return (2);
+		}
+		flags->len_mod = LM_L;
+		return (1);
+	}
+	else if (str[0] == 'j')
+	{
+		flags->len_mod = LM_J;
+		return (1);
+	}
+	else if (str[0] == 'z')
+	{
+		flags->len_mod = LM_Z;
+		return (1);
+	}
+	return (0);
 }
 
 int 	split_args(const char *str, va_list *valist, t_printf_args *args)
@@ -86,12 +84,18 @@ int 	split_args(const char *str, va_list *valist, t_printf_args *args)
 			if (str[i] == 'd' || str[i] == 'i' || str[i] == 'D')
 			{
 				spec->type = T_INT;
-				spec->var.i = va_arg(*valist, int);
+				if (spec->flags.len_mod >= LM_L)
+					spec->var.imax = va_arg(*valist, intmax_t);
+				else
+					spec->var.imax = va_arg(*valist, int);
 			}
 			else if (str[i] == 'u')
 			{
 				spec->type = T_UINT;
-				spec->var.ui = va_arg(*valist, unsigned int);
+				if (spec->flags.len_mod >= LM_L)
+					spec->var.uimax = va_arg(*valist, uintmax_t);
+				else
+					spec->var.uimax = va_arg(*valist, unsigned int);
 			}
 			else if (str[i] == 's')
 			{

@@ -2,8 +2,10 @@
 # define FT_PRINTF_H
 
 #include <stdlib.h>
+#include <stdarg.h>
+#include <stdint.h>
 
-typedef				enum e_typevar
+typedef enum 		e_typevar
 {
 	T_NULL = 0,
 	T_INT,
@@ -16,7 +18,7 @@ typedef				enum e_typevar
 	T_PERCENT
 }					t_typevar;
 
-typedef				enum e_len_mod
+typedef enum 		e_len_mod
 {
 	LM_NULL = 0,
 	LM_HH,
@@ -25,45 +27,49 @@ typedef				enum e_len_mod
 	LM_LL,
 	LM_J,
 	LM_Z
-} t_len_mod;
+} 					t_len_mod;
 
-typedef				struct s_spec_flags
+typedef struct 		s_spec_flags
 {
-	int 	sharp;
-	int 	minus;
-	int 	plus;
-	int 	space;
-	int 	zero;
-	int 	caps;
+	int 		sharp;
+	int 		minus;
+	int 		plus;
+	int 		space;
+	int 		zero;
+	int 		caps;
 	t_len_mod 	len_mod;
-} t_spec_flags;
+} 					t_spec_flags;
 
-typedef				union u_typeunion
+typedef union 		u_typeunion
 {
-	char 	c;
-	int 	i;
-	unsigned int ui;
-	char 	*str;
-	void	*vp;
+	char 		 	c;
+	int 			i;
+	unsigned int 	ui;
+	intmax_t		imax;
+	uintmax_t		uimax;
+	char 			*str;
+	void			*vp;
 }					t_typeunion;
 
-typedef 			struct s_printf_var
+typedef struct 		s_printf_var
 {
-	t_typevar	type;
-	t_typeunion	var;
-	t_spec_flags flags;
-} t_printf_var;
+	t_typevar		type;
+	t_typeunion		var;
+	t_spec_flags 	flags;
+} 					t_printf_var;
 
-typedef				struct s_printf_args
+typedef struct 		s_printf_args
 {
-	int 		spec_count;
-	char		**strings;
-	t_printf_var *data;
+	int 			spec_count;
+	char			**strings;
+	t_printf_var 	*data;
 }					t_printf_args;
 
 int					ft_printf(const char * format, ...);
 void				ft_puthex(size_t hex, int prefix, int caps);
 void				ft_putoctal(int octal, int prefix);
 int 				split_args(const char *str, va_list *valist, t_printf_args *args);
+char				*ft_ulltoa(unsigned long long int nbr);
+char				*ft_lltoa(long long int nbr);
 
 #endif

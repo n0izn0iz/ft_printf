@@ -4,24 +4,24 @@ SRCS = $(wildcard srcs/*.c)
 OBJS = $(patsubst srcs/%.c, objs/%.o, $(SRCS))
 FLAGS = -Wall -Wextra -Werror
 
-all : $(NAME)
+all: $(OBJS)
 
-objs/%.o : srcs/%.c
-	gcc -c $< -o $@ $(FLAGS) -I includes -I ../libft
+objs/%.o: srcs/%.c
+	gcc -c $< -o $@ $(FLAGS) -I includes -I ../libft/includes
 
-$(NAME) : $(OBJS) $(LIBFT)
-	gcc -o $(NAME) $^
-
-$(LIBFT) :
+$(LIBFT):
 	make -C ../libft re
-	cp ../libft/libft.a objs
+	cp ../libft/bins/libft.a objs
 
-clean :
+clean:
 	rm -f objs/*
 
-fclean : clean
+fclean: clean
 	rm -f $(NAME)
 
-re : fclean all
+test: all
+	make -C test
+
+re: fclean all clean test
 
 .PHONY: clean fclean
