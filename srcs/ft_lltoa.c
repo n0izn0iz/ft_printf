@@ -7,7 +7,7 @@ int			ft_ll_len(long long int nbr)
 {
 	int result;
 
-	result = 0LL;
+	result = 1LL;
 	if (nbr < 0)
 	{
 		nbr = -nbr;
@@ -18,7 +18,7 @@ int			ft_ll_len(long long int nbr)
 		nbr /= 10LL;
 		result++;
 	}
-	return (result + 1);
+	return (result);
 }
 
 char		*ft_lltoa(long long int nbr)

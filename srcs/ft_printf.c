@@ -61,51 +61,97 @@ void 			ft_putnchar(int nbr, char c)
 	}
 }
 
+int 			ft_octlen(uintmax_t oct, int prefix)
+{
+	int result;
+
+	result = 1;
+	if (prefix)
+		result ++;
+	while (oct >= 8)
+	{
+		result++;
+		oct /= 8;
+	}
+	return (result);
+}
+
+static int 		get_len(t_typeunion *data, t_typevar type, t_spec_flags *flags)
+{
+	if (type == T_INT)
+		return (ft_ll_len(data->imax));
+	else if (type == T_UINT)
+		return (ft_ull_len(data->uimax));
+	else if (type == T_STR)
+		return (ft_strlen(data->str));
+	else if (type == T_CHAR)
+		return (1);
+	else if (type == T_PERCENT)
+		return (1);
+	else if (type == T_HEX || type == T_VOID)
+		return (ft_hexlen(data->uimax, (type == T_VOID ? 1 : flags->sharp)));
+	else if (type == T_OCT)
+		return (ft_octlen(data->uimax, flags->sharp));
+	return (0);
+}
+
 static void		print(t_printf_args *args)
 {
 	int j;
 	j = 0;
 	ft_putstr(args->strings[j]);
+	free(args->strings[j]);
 	while (j < args->spec_count)
 	{
-		if (args->data[j].type == T_INT)
+		t_printf_var *arg = args->data + j;
+		int len = get_len(&(arg->var), arg->type, &(arg->flags));
+		if (arg->flags.width > 0 && !arg->flags.minus)
 		{
-			args->data[j].var.imax = len_cast(args->data[j].var.imax, args->data[j].flags.len_mod);
-			ft_putnchar(args->data[j].flags.precision - ft_ll_len(args->data[j].var.imax), '0');
-			if (args->data[j].var.imax != 0 || args->data[j].flags.precision > 0)
+			if (arg->flags.zero)
+				ft_putnchar(arg->flags.width - len, '0');
+			else
+				ft_putnchar(arg->flags.width - len, ' ');
+		}
+		if (arg->type == T_INT)
+		{
+			arg->var.imax = len_cast(arg->var.imax, arg->flags.len_mod);
+			ft_putnchar(arg->flags.precision - ft_ll_len(arg->var.imax), '0');
+			if (arg->var.imax != 0 || arg->flags.precision > 0)
 			{
-				if (args->data[j].flags.plus && args->data[j].var.imax >= 0)
+				if (arg->flags.plus && arg->var.imax >= 0)
 					ft_putchar('+');
-				else if (args->data[j].flags.space &&  args->data[j].var.imax >= 0)
+				else if (arg->flags.space &&  arg->var.imax >= 0)
 					ft_putchar(' ');
-				ft_putstr(ft_lltoa(args->data[j].var.imax));
+				ft_putstr(ft_lltoa(arg->var.imax));
 			}
 		}
-		else if (args->data[j].type == T_UINT)
+		else if (arg->type == T_UINT)
 		{
-			args->data[j].var.uimax = ulen_cast(args->data[j].var.uimax, args->data[j].flags.len_mod);
-			ft_putstr(ft_ulltoa(args->data[j].var.uimax));
+			arg->var.uimax = ulen_cast(arg->var.uimax, arg->flags.len_mod);
+			ft_putstr(ft_ulltoa(arg->var.uimax));
 		}
-		else if (args->data[j].type == T_STR)
-		{
-			if (args->data[j].flags.width > 0 && !args->data[j].flags.minus)
-				ft_putnchar(args->data[j].flags.width - ft_strlen(args->data[j].var.str), ' ');
-			ft_putstr(args->data[j].var.str);
-			if (args->data[j].flags.width > 0 && args->data[j].flags.minus)
-				ft_putnchar(args->data[j].flags.width - ft_strlen(args->data[j].var.str), ' ');
-		}
-		else if (args->data[j].type == T_OCT)
-			ft_putoctal(args->data[j].var.ui, args->data[j].flags.sharp);
-		else if (args->data[j].type == T_VOID)
-			ft_puthex((size_t)(args->data[j].var.vp), 1, 0);
-		else if (args->data[j].type == T_HEX)
-			ft_puthex(args->data[j].var.ui, args->data[j].flags.sharp, args->data[j].flags.caps);
-		else if (args->data[j].type == T_CHAR)
-			ft_putchar(args->data[j].var.uimax);
-		else if (args->data[j].type == T_PERCENT)
+		else if (arg->type == T_STR)
+			ft_putstr(arg->var.str);
+		else if (arg->type == T_OCT)
+			ft_putoctal(arg->var.uimax, (arg->flags.sharp && arg->var.uimax > 0));
+		else if (arg->type == T_VOID)
+			ft_puthex((size_t)(arg->var.vp), 1, 0);
+		else if (arg->type == T_HEX)
+			ft_puthex(arg->var.uimax, (arg->flags.sharp && arg->var.uimax > 0), arg->flags.caps);
+		else if (arg->type == T_CHAR)
+			ft_putchar(arg->var.uimax);
+		else if (arg->type == T_PERCENT)
 			ft_putchar('%');
-		ft_putstr(args->strings[j + 1]);
+		if (arg->flags.width > 0 && arg->flags.minus)
+		{
+			if (arg->flags.zero)
+				ft_putnchar(arg->flags.width - len, '0');
+			else
+				ft_putnchar(arg->flags.width - len, ' ');
+		}
 		j++;
+		ft_putstr(args->strings[j]);
+		free(args->strings[j]);
 	}
 }
 
@@ -121,5 +167,6 @@ int		ft_printf(const char * format, ...)
 	split_args(format, &valist, &args);
 	va_end(valist);
 	print(&args);
+	free(args.data);
 	return (0);
 }

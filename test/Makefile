@@ -1,6 +1,6 @@
 SRCS = $(wildcard tests/*.c)
 PRINTF_OBJS = $(wildcard ../objs/*.o)
-LIBFT = ../../libft/libft.a
+LIBFT = ../../libft/bins/libft.a
 OBJS = $(patsubst tests/%.c, objs/%.o, $(SRCS))
 STD_TEST_BINS = $(patsubst objs/%.o, bins/std_%, $(OBJS))
 OWN_TEST_BINS = $(patsubst objs/%.o, bins/own_%, $(OBJS))

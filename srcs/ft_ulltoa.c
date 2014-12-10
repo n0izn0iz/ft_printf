@@ -2,17 +2,17 @@
 #include <stdio.h>
 #include "libft.h"
 
-int			ull_len(unsigned long long int nbr)
+int			ft_ull_len(unsigned long long int nbr)
 {
 	int result;
 
-	result = 0LL;
+	result = 1LL;
 	while (nbr >= 10LL)
 	{
 		nbr /= 10LL;
 		result++;
 	}
-	return (result + 1);
+	return (result);
 }
 
 char		*ft_ulltoa(unsigned long long int nbr)
@@ -21,7 +21,7 @@ char		*ft_ulltoa(unsigned long long int nbr)
 	char *str;
 	int len;
 
-	len = ull_len(nbr);
+	len = ft_ull_len(nbr);
 	str = (char*)malloc(sizeof(char) * (len + 1));
 	result = str;
 	str[len] = '\0';

@@ -74,5 +74,7 @@ int 				split_args(const char *str, va_list *valist, t_printf_args *args);
 char				*ft_ulltoa(unsigned long long int nbr);
 char				*ft_lltoa(long long int nbr);
 int					ft_ll_len(long long int nbr);
+int					ft_ull_len(unsigned long long int nbr);
+int					ft_hexlen(uintmax_t hex, int prefix);
 
 #endif
