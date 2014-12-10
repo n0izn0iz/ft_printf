@@ -1,12 +1,27 @@
 #include <stdarg.h>
+#include <stdio.h>
 #include "ft_printf.h"
 #include "libft.h"
+
+int 	fill_width(const char *str, t_spec_flags *flags)
+{
+	int i;
+	char *tmp;
+
+	i = 0;
+	while (ft_isdigit(str[i]))
+		i++;
+	tmp = ft_strsub(str, 0, i);
+	flags->width = ft_atoi(tmp);
+	free(tmp);
+	return (i);
+}
 
 int 	fill_flags(const char *str, t_spec_flags *flags)
 {
 	int i;
 
-	ft_bzero(flags, sizeof(t_spec_flags));
+	
 	i = 0;
 	while (str[i])
 	{
@@ -63,6 +78,22 @@ int 	fill_lenght(const char *str, t_spec_flags *flags)
 	return (0);
 }
 
+int 	fill_precision(const char *str, t_spec_flags *flags)
+{
+	int i;
+	char *tmp;
+
+	flags->precision = 1;
+	i = 0;
+	if (str[i++] != '.')
+		return (0);
+	while (ft_isdigit(str[i]))
+		i++;
+	flags->precision = ft_atoi((tmp = ft_strsub(str, 1, i)));
+	free(tmp);
+	return (i);
+}
+
 int 	split_args(const char *str, va_list *valist, t_printf_args *args)
 {
 	int 	strstart;
@@ -79,7 +110,10 @@ int 	split_args(const char *str, va_list *valist, t_printf_args *args)
 		{	
 			spec = args->data + index;
 			args->strings[index] = ft_strsub(str, strstart, i - strstart);
+			ft_bzero(&(spec->flags), sizeof(t_spec_flags));
 			i += fill_flags(str + i + 1, &(spec->flags)) + 1;
+			i += fill_width(str + i, &(spec->flags));
+			i += fill_precision(str + i, &(spec->flags));
 			i += fill_lenght(str + i, &(spec->flags));
 			if (str[i] == 'd' || str[i] == 'i' || str[i] == 'D')
 			{
@@ -89,7 +123,7 @@ int 	split_args(const char *str, va_list *valist, t_printf_args *args)
 				else
 					spec->var.imax = va_arg(*valist, int);
 			}
-			else if (str[i] == 'u')
+			else if (str[i] == 'u' || str[i] == 'U')
 			{
 				spec->type = T_UINT;
 				if (spec->flags.len_mod >= LM_L)
@@ -97,12 +131,12 @@ int 	split_args(const char *str, va_list *valist, t_printf_args *args)
 				else
 					spec->var.uimax = va_arg(*valist, unsigned int);
 			}
-			else if (str[i] == 's')
+			else if (str[i] == 's' || str[i] == 'S')
 			{
 				spec->type = T_STR;
 				spec->var.str = va_arg(*valist, char*);
 			}
-			else if (str[i] == 'o')
+			else if (str[i] == 'o' || str[i] == 'O')
 			{
 				spec->type = T_OCT;
 				spec->var.ui = va_arg(*valist, unsigned int);
@@ -119,10 +153,10 @@ int 	split_args(const char *str, va_list *valist, t_printf_args *args)
 				spec->type = T_HEX;
 				spec->var.ui = va_arg(*valist, unsigned int);
 			}
-			else if (str[i] == 'c')
+			else if (str[i] == 'c' || str[i] == 'C')
 			{
 				spec->type = T_CHAR;
-				spec->var.c = va_arg(*valist, int);
+				spec->var.uimax = va_arg(*valist, uintmax_t);
 			}
 			else if (str[i] == '%')
 			{

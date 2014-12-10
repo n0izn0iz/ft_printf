@@ -38,6 +38,8 @@ typedef struct 		s_spec_flags
 	int 		zero;
 	int 		caps;
 	t_len_mod 	len_mod;
+	int 		width;
+	int 		precision;
 } 					t_spec_flags;
 
 typedef union 		u_typeunion
@@ -67,9 +69,10 @@ typedef struct 		s_printf_args
 
 int					ft_printf(const char * format, ...);
 void				ft_puthex(size_t hex, int prefix, int caps);
-void				ft_putoctal(int octal, int prefix);
+void				ft_putoctal(unsigned int octal, int prefix);
 int 				split_args(const char *str, va_list *valist, t_printf_args *args);
 char				*ft_ulltoa(unsigned long long int nbr);
 char				*ft_lltoa(long long int nbr);
+int					ft_ll_len(long long int nbr);
 
 #endif

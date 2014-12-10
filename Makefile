@@ -7,11 +7,11 @@ FLAGS = -Wall -Wextra -Werror
 all: $(OBJS)
 
 objs/%.o: srcs/%.c
-	gcc -c $< -o $@ $(FLAGS) -I includes -I ../libft/includes
+	gcc -c $< -o $@ $(FLAGS) -I includes -I ../libft
 
 $(LIBFT):
 	make -C ../libft re
-	cp ../libft/bins/libft.a objs
+	cp ../libft/libft.a objs
 
 clean:
 	rm -f objs/*
@@ -22,6 +22,6 @@ fclean: clean
 test: all
 	make -C test
 
-re: fclean all clean test
+re: fclean all
 
-.PHONY: clean fclean
+.PHONY: clean fclean re all test

@@ -1,8 +1,9 @@
 SRCS = $(wildcard tests/*.c)
 PRINTF_OBJS = $(wildcard ../objs/*.o)
-LIBFT = ../../libft/bins/libft.a
+LIBFT = ../../libft/libft.a
 OBJS = $(patsubst tests/%.c, objs/%.o, $(SRCS))
-TEST_BINS = $(patsubst objs/%.o, bins/%, $(OBJS))
+STD_TEST_BINS = $(patsubst objs/%.o, bins/std_%, $(OBJS))
+OWN_TEST_BINS = $(patsubst objs/%.o, bins/own_%, $(OBJS))
 CFLAGS = -Wall -Wextra -Werror
 
 all: test
@@ -16,10 +17,16 @@ $(LIBFT):
 objs/%.o: tests/%.c
 	gcc -c $^ -o $@ $(CFLAGS) -I ../includes
 
-bins/%: objs/%.o $(PRINTF_OBJS) $(LIBFT)
+%.o: %.c
+	gcc -c $^ -o $@ $(CLFAGS) -I ../includes
+
+bins/std_%: objs/%.o main_std.o $(PRINTF_OBJS) $(LIBFT)
 	gcc -o $@ $^
 
-test: $(TEST_BINS)
+bins/own_%: objs/%.o main_own.o $(PRINTF_OBJS) $(LIBFT)
+	gcc -o $@ $^
+
+test: $(STD_TEST_BINS) $(OWN_TEST_BINS)
 	./run_tests.sh
 
 clean:

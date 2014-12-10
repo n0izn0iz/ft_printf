@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "libft.h"
 
-int			ll_len(long long int nbr)
+int			ft_ll_len(long long int nbr)
 {
 	int result;
 
@@ -29,7 +29,7 @@ char		*ft_lltoa(long long int nbr)
 
 	if (nbr < -9223372036854775807)
 		return (ft_strdup("-9223372036854775808"));
-	len = ll_len(nbr);
+	len = ft_ll_len(nbr);
 	str = (char*)malloc(sizeof(char) * (len + 1));
 	result = str;
 	str[len] = '\0';
