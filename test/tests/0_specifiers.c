@@ -3,6 +3,7 @@
 #include "ft_printf.h"
 
 #define CMD0 "00_%%c: %c %c %c %c %c %c\n", '0', '3', '7', 'A', 'b', 'C'
+#define CMD0a "00a_%%C: %C, %C, %C, %C, %C\n", L'À', L'ï', L'ê', L'ç', 945
 #define CMD1 "01_%%s: %s %s %s %s %s %s\n", "Hello", "ceci", "est", "un", "test", ""
 #define CMD2 "02_%%i: %i %i %i %i %i %i\n", 0, 42, -7, 7, (int)INT32_MAX, (int)INTMAX_MIN
 #define CMD3 "03_%%d: %d %d %d %d %d %d\n", 0, 42, -7, 7, (int)INT32_MAX, (int)INTMAX_MIN
@@ -16,6 +17,7 @@ int		std_printf(void)
 {
 	
 	printf(CMD0);
+	printf(CMD0a);
 	printf(CMD1);
 	printf(CMD2);
 	printf(CMD3);
@@ -30,6 +32,7 @@ int		std_printf(void)
 int		own_printf(void)
 {
 	ft_printf(CMD0);
+	ft_printf(CMD0a);
 	ft_printf(CMD1);
 	ft_printf(CMD2);
 	ft_printf(CMD3);

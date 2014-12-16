@@ -1,10 +1,10 @@
 SRCS = $(wildcard tests/*.c)
 PRINTF_OBJS = $(wildcard ../objs/*.o)
-LIBFT = ../../libft/bins/libft.a
+LIBFT = ../../libft/libft.a
 OBJS = $(patsubst tests/%.c, objs/%.o, $(SRCS))
 STD_TEST_BINS = $(patsubst objs/%.o, bins/std_%, $(OBJS))
 OWN_TEST_BINS = $(patsubst objs/%.o, bins/own_%, $(OBJS))
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = #-Wall -Wextra -Werror
 
 all: test
 

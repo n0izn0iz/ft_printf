@@ -22,7 +22,7 @@ int 	count_specifiers(const char *str)
 	return (count);
 }
 
-static intmax_t 	len_cast(intmax_t var, t_len_mod len_mod)
+/*static intmax_t 	len_cast(intmax_t var, t_len_mod len_mod)
 {
 	if (len_mod == LM_HH)
 		return ((char)var);
@@ -50,7 +50,7 @@ static uintmax_t 	ulen_cast(uintmax_t var, t_len_mod len_mod)
 	else if (len_mod == LM_Z)
 		return ((size_t)var);
 	return (var);
-}
+}*/
 
 void 			ft_putnchar(int nbr, char c)
 {
@@ -76,7 +76,7 @@ int 			ft_octlen(uintmax_t oct, int prefix)
 	return (result);
 }
 
-static int 		get_len(t_typeunion *data, t_typevar type, t_spec_flags *flags)
+/*static int 		get_len(t_typeunion *data, t_typevar type, t_spec_flags *flags)
 {
 	if (type == T_INT)
 		return (ft_ll_len(data->imax));
@@ -93,9 +93,9 @@ static int 		get_len(t_typeunion *data, t_typevar type, t_spec_flags *flags)
 	else if (type == T_OCT)
 		return (ft_octlen(data->uimax, flags->sharp));
 	return (0);
-}
+}*/
 
-static void		print(t_printf_args *args)
+/*static void		print(t_printf_args *args)
 {
 	int j;
 	j = 0;
@@ -139,7 +139,12 @@ static void		print(t_printf_args *args)
 		else if (arg->type == T_HEX)
 			ft_puthex(arg->var.uimax, (arg->flags.sharp && arg->var.uimax > 0), arg->flags.caps);
 		else if (arg->type == T_CHAR)
-			ft_putchar(arg->var.uimax);
+		{
+			if (arg->flags.len_mod == LM_L)
+				ft_putwchar(arg->var.uimax);
+			else
+				ft_putchar(arg->var.uimax);
+		}
 		else if (arg->type == T_PERCENT)
 			ft_putchar('%');
 		if (arg->flags.width > 0 && arg->flags.minus)
@@ -153,7 +158,7 @@ static void		print(t_printf_args *args)
 		ft_putstr(args->strings[j]);
 		free(args->strings[j]);
 	}
-}
+}*/
 
 int		ft_printf(const char * format, ...)
 {
@@ -166,7 +171,7 @@ int		ft_printf(const char * format, ...)
 	va_start(valist, format);
 	split_args(format, &valist, &args);
 	va_end(valist);
-	print(&args);
+	/*print(&args);*/
 	free(args.data);
 	return (0);
 }

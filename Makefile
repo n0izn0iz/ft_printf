@@ -7,7 +7,7 @@ FLAGS = -Wall -Wextra -Werror
 all: $(OBJS)
 
 objs/%.o: srcs/%.c
-	gcc -c $< -o $@ $(FLAGS) -I includes -I ../libft/includes
+	gcc -c $< -o $@ $(FLAGS) -Iincludes -I../libft
 
 $(LIBFT):
 	make -C ../libft re

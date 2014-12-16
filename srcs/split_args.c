@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "ft_printf.h"
 #include "libft.h"
+#include <wchar.h>
 
 int 	fill_width(const char *str, t_spec_flags *flags)
 {
@@ -100,74 +101,46 @@ int 	split_args(const char *str, va_list *valist, t_printf_args *args)
 	int 	index;
 	int 	i;
 	t_printf_var	*spec;
+	char 	c;
+	t_len_mod	len_mod;
 
 	i = 0;
 	index = 0;
 	strstart = 0;
-	while (str[i] != '\0')
+	while ((c = str[i]) != '\0')
 	{
-		if (str[i] == '%')
+		if (c == '%')
 		{	
 			spec = args->data + index;
 			args->strings[index] = ft_strsub(str, strstart, i - strstart);
+			ft_putstr(args->strings[index]);
 			ft_bzero(&(spec->flags), sizeof(t_spec_flags));
 			i += fill_flags(str + i + 1, &(spec->flags)) + 1;
 			i += fill_width(str + i, &(spec->flags));
 			i += fill_precision(str + i, &(spec->flags));
 			i += fill_lenght(str + i, &(spec->flags));
-			if (str[i] == 'd' || str[i] == 'i' || str[i] == 'D')
-			{
-				spec->type = T_INT;
-				if (spec->flags.len_mod >= LM_L)
-					spec->var.imax = va_arg(*valist, intmax_t);
-				else
-					spec->var.imax = va_arg(*valist, int);
-			}
-			else if (str[i] == 'u' || str[i] == 'U')
-			{
-				spec->type = T_UINT;
-				if (spec->flags.len_mod >= LM_L)
-					spec->var.uimax = va_arg(*valist, uintmax_t);
-				else
-					spec->var.uimax = va_arg(*valist, unsigned int);
-			}
-			else if (str[i] == 's' || str[i] == 'S')
-			{
-				spec->type = T_STR;
-				spec->var.str = va_arg(*valist, char*);
-			}
-			else if (str[i] == 'o' || str[i] == 'O')
-			{
-				spec->type = T_OCT;
-				spec->var.ui = va_arg(*valist, unsigned int);
-			}
-			else if (str[i] == 'p')
-			{
-				spec->type = T_VOID;
-				spec->var.vp = va_arg(*valist, void*);
-			}
-			else if (str[i] == 'x' || str[i] == 'X')
-			{
-				if (str[i] == 'X')
-					spec->flags.caps = 1;
-				spec->type = T_HEX;
-				spec->var.ui = va_arg(*valist, unsigned int);
-			}
-			else if (str[i] == 'c' || str[i] == 'C')
-			{
-				spec->type = T_CHAR;
-				spec->var.uimax = va_arg(*valist, uintmax_t);
-			}
-			else if (str[i] == '%')
-			{
-				spec->type = T_PERCENT;
-			}
-			
+			len_mod = spec->flags.len_mod;
+			c = str[i];
+			if (c == 'd' || c == 'i' || c == 'D')
+				print_int(valist, len_mod);
+			else if (c == 'u' || c == 'U')
+				print_uint(valist, len_mod);
+			else if (c == 's')
+				ft_putstr(va_arg(*valist, char*));
+			else if (c == 'c' || c == 'C')
+				ft_putwchar(va_arg(*valist, wchar_t));
+			else if (c == 'p' || c == 'x' || c == 'X')
+				print_hex(valist, len_mod, c);
+			else if (c == 'o' || c == 'O')
+				ft_putoctal(va_arg(*valist, uintmax_t), 0);
+			else if (c == '%')
+				ft_putchar(c);
 			strstart = i + 1;
 			++index;
 		}
 		++i;
 	}
 	args->strings[index] = ft_strsub(str, strstart, i - strstart);
+	ft_putstr(args->strings[index]);
 	return (index);
 }

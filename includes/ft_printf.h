@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include <wchar.h>
 
 typedef enum 		e_typevar
 {
@@ -76,5 +77,11 @@ char				*ft_lltoa(long long int nbr);
 int					ft_ll_len(long long int nbr);
 int					ft_ull_len(unsigned long long int nbr);
 int					ft_hexlen(uintmax_t hex, int prefix);
+void				ft_putwchar(wint_t wchar);
+
+void	print_uint(va_list *valist, t_len_mod len_mod);
+void	print_int(va_list *valist, t_len_mod len_mod);
+void	print_hex(va_list *valist, t_len_mod len_mod, char c);
+void		ft_putwchar(wint_t wchar);
 
 #endif
