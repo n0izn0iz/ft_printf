@@ -11,9 +11,9 @@
 #define CMD6  "26_min%%d : %-10d %-5d %-10d %-5d %-10d\n", 123567, 1234567, 0, INT32_MAX, INT32_MIN
 #define CMD7  "27_min%%u : %-5u %-10u %-5u %-10u\n", 1234567, 0, UINT32_MAX, INT32_MIN
 #define CMD8  "28_min%%c : %-1c %-5c %-10c %-5c %-10c\n", 'A', '0', 'b', '1', 'C'
-#define CMD9  "29_min%%p : %-10p %-30p %-10p\n", &tmp, &tmp, &tmp
-#define CMD10 "210_min%%x: %-10x %-30x %-10x\n", (unsigned int)(size_t)&tmp, (unsigned int)(size_t)&tmp, (unsigned int)(size_t)&tmp
-#define CMD11 "211_min%%X: %-10X %-30X %-10X\n", (unsigned int)(size_t)&tmp, (unsigned int)(size_t)&tmp, (unsigned int)(size_t)&tmp
+#define CMD9  "29_min%%p : %-10p %-30p %-10p %-30p %-10p\n", (void*)0, (void*)0x42, (void*)0x1337, (void*)UINTMAX_MAX, (void*)-1
+#define CMD10 "210_min%%x: %-10x %-30x %-10x %-30x %-10x\n", 42, -7, 7, (int)INTMAX_MAX, (int)INTMAX_MIN, 0xABCD
+#define CMD11 "211_min%%X: %-10X %-30X %-10X %-30x %-10x\n", 42, -7, 7, (int)INTMAX_MAX, (int)INTMAX_MIN, 0xABCD
 #define CMD12 "212_min%%o: %-5o %-10o %-5o %-10o\n", 1234567, 0, UINT32_MAX, INT32_MIN
 
 int		std_printf(void)

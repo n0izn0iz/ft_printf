@@ -102,7 +102,6 @@ int 	split_args(const char *str, va_list *valist, t_printf_args *args)
 	int 	i;
 	t_printf_var	*spec;
 	char 	c;
-	t_len_mod	len_mod;
 
 	i = 0;
 	index = 0;
@@ -119,20 +118,21 @@ int 	split_args(const char *str, va_list *valist, t_printf_args *args)
 			i += fill_width(str + i, &(spec->flags));
 			i += fill_precision(str + i, &(spec->flags));
 			i += fill_lenght(str + i, &(spec->flags));
-			len_mod = spec->flags.len_mod;
 			c = str[i];
+			if (c == 'S' || c == 'C' || c == 'D' || c == 'U' || c == 'O')
+				spec->flags.len_mod = LM_L;
 			if (c == 'd' || c == 'i' || c == 'D')
-				print_int(valist, len_mod);
+				print_int(valist, &(spec->flags));
 			else if (c == 'u' || c == 'U')
-				print_uint(valist, len_mod);
-			else if (c == 's')
-				ft_putstr(va_arg(*valist, char*));
+				print_uint(valist, &(spec->flags));
+			else if (c == 's' || c == 'S')
+				print_str(valist, &(spec->flags));
 			else if (c == 'c' || c == 'C')
-				ft_putwchar(va_arg(*valist, wchar_t));
+				print_char(valist, &(spec->flags));
 			else if (c == 'p' || c == 'x' || c == 'X')
-				print_hex(valist, len_mod, c);
+				print_hex(valist, &(spec->flags), c);
 			else if (c == 'o' || c == 'O')
-				ft_putoctal(va_arg(*valist, uintmax_t), 0);
+				print_octal(valist, &(spec->flags));
 			else if (c == '%')
 				ft_putchar(c);
 			strstart = i + 1;

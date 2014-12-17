@@ -1,29 +1,53 @@
+#include <stdint.h>
+#include <stdio.h>
+#include "ft_printf.h"
 #include "libft.h"
 
-static void	puthex_recursion(size_t hex, int caps)
+void			ft_puthex(size_t hex, int prefix, int caps)
 {
-	if (hex >= 16)
-		puthex_recursion(hex / 16, caps);
-	if ((hex = hex % 16) < 10)
-		ft_putchar(hex + '0');
+	char		*str;
+
+	str = ft_hextoa(hex, prefix, caps);
+	ft_putstr(str);
+	free(str);
+}
+
+static char		convert_digit(int digit, int caps)
+{
+	if (digit < 10)
+		return (digit + '0');
 	else
 	{
 		if (caps)
-			ft_putchar(hex - 10 + 'A');
+			return (digit - 10 + 'A');
 		else
-			ft_putchar(hex - 10 + 'a');
+			return (digit - 10 + 'a');
 	}
 }
 
-void		ft_puthex(size_t hex, int prefix, int caps)
+char			*ft_hextoa(uintmax_t hex, int prefix, int caps)
 {
+	char 		*str;
+	int			len;
+
+	len = ft_hexlen(hex, prefix);
+	str = malloc(sizeof(char) * (len + 1 + (prefix ? 2 : 0)));
+	str[len] = '\0';
 	if (prefix)
 	{
-		ft_putchar('0');
+		str[0] = '0';
 		if (caps)
-			ft_putchar('X');
+			str[1] = 'X';
 		else
-			ft_putchar('x');
+			str[1] = 'x';
 	}
-	puthex_recursion(hex, caps);
+	str += len - 1;
+	while (hex >= 16)
+	{
+		*str = convert_digit(hex % 16, caps);
+		hex /= 16;
+		str--;
+	}
+	*str = convert_digit(hex % 16, caps);
+	return (str - (prefix ? 2 : 0));
 }

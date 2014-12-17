@@ -77,11 +77,16 @@ char				*ft_lltoa(long long int nbr);
 int					ft_ll_len(long long int nbr);
 int					ft_ull_len(unsigned long long int nbr);
 int					ft_hexlen(uintmax_t hex, int prefix);
-void				ft_putwchar(wint_t wchar);
+char				*ft_hextoa(uintmax_t hex, int prefix, int caps);
 
-void	print_uint(va_list *valist, t_len_mod len_mod);
-void	print_int(va_list *valist, t_len_mod len_mod);
-void	print_hex(va_list *valist, t_len_mod len_mod, char c);
+void	print_uint(va_list *valist, t_spec_flags *opts);
+void	print_int(va_list *valist, t_spec_flags *opts);
+void	print_hex(va_list *valist, t_spec_flags *opts, char c);
+void	print_str(va_list *valist, t_spec_flags *opts);
+void	print_char(va_list *va_list, t_spec_flags *opts);
+void	print_octal(va_list *valist, t_spec_flags *opts);
 void		ft_putwchar(wint_t wchar);
+void		ft_putwstr(wint_t *str);
+int		ft_octlen(uintmax_t octal, int prefix);
 
 #endif
