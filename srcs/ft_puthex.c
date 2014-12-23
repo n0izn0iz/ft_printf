@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_puthex.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/12/23 14:21:09 by nmeier            #+#    #+#             */
+/*   Updated: 2014/12/23 14:22:19 by nmeier           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stdio.h>
 #include "ft_printf.h"
@@ -27,7 +39,7 @@ static char		convert_digit(int digit, int caps)
 
 char			*ft_hextoa(uintmax_t hex, int prefix, int caps)
 {
-	char 		*str;
+	char		*str;
 	int			len;
 
 	len = ft_hexlen(hex, prefix);

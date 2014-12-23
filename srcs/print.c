@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/12/23 14:21:33 by nmeier            #+#    #+#             */
+/*   Updated: 2014/12/23 14:21:56 by nmeier           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdarg.h>
 #include <stdint.h>
+#include <unistd.h>
 #include "ft_printf.h"
 #include "libft.h"
 
-void 	ft_putnchar(int nbr, char c)
+static inline void		ft_putnchar(int nbr, char c)
 {
 	while (nbr > 0)
 	{
@@ -12,9 +25,10 @@ void 	ft_putnchar(int nbr, char c)
 	}
 }
 
-void	print_int(va_list *valist, t_spec_flags *opts)
+void					print_int(va_list *valist, t_spec_flags *opts)
 {
 	char *str;
+
 	if (opts->len_mod == LM_HH)
 		str = ft_lltoa((char)va_arg(*valist, int));
 	else if (opts->len_mod == LM_H)
@@ -43,9 +57,10 @@ void	print_int(va_list *valist, t_spec_flags *opts)
 	free(str);
 }
 
-void	print_uint(va_list *valist, t_spec_flags *opts)
+void					print_uint(va_list *valist, t_spec_flags *opts)
 {
 	char *str;
+
 	if (opts->len_mod == LM_HH)
 		str = ft_ulltoa((unsigned char)va_arg(*valist, unsigned int));
 	else if (opts->len_mod == LM_H)
@@ -74,42 +89,7 @@ void	print_uint(va_list *valist, t_spec_flags *opts)
 	free(str);
 }
 
-void	print_str(va_list *valist, t_spec_flags *opts)
-{
-	int 	len;
-	char 	*str;
-	wchar_t	*wstr;
-
-	if (opts->len_mod == LM_L)
-	{
-		wstr = va_arg(*valist, wchar_t*);
-		len = ft_wstrlen(wstr);
-	}
-	else
-	{
-		str = va_arg(*valist, char*);
-		len = ft_strlen(str);
-	}
-	if (!opts->minus)
-		ft_putnchar(opts->width - len, opts->zero ? '0' : ' ');
-	opts->len_mod == LM_L ? ft_putnwchar(wstr, opts->precision_set ? opts->precision : len) : ft_putnstr(str, opts->precision_set ? opts->precision : len);
-	if (opts->minus)
-		ft_putnchar(opts->width - len, opts->zero ? '0' : ' ');
-}
-
-void	print_char(va_list *valist, t_spec_flags *opts)
-{
-	if (!opts->minus)
-		ft_putnchar(opts->width - 1, opts->zero ? '0' : ' ');
-	if (opts->len_mod == LM_L)
-		ft_putwchar(va_arg(*valist, wint_t));
-	else
-		ft_putchar(va_arg(*valist, int));
-	if (opts->minus)
-		ft_putnchar(opts->width - 1, opts->zero ? '0' : ' ');
-}
-
-void	print_hex(va_list *valist, t_spec_flags *opts, char c)
+void					print_hex(va_list *valist, t_spec_flags *opts, char c)
 {
 	uintmax_t	hex;
 	char		*str;
@@ -134,13 +114,13 @@ void	print_hex(va_list *valist, t_spec_flags *opts, char c)
 	ft_putnchar(opts->precision - len, '0');
 	if (!opts->minus)
 		ft_putnchar(opts->width - len, opts->zero ? '0' : ' ');
-	if (!opts->precision_set || (hex != 0 &&opts->precision > 0))
+	if (!opts->precision_set || (hex != 0 && opts->precision > 0))
 		ft_putstr(str);
 	if (opts->minus)
 		ft_putnchar(opts->width - len, opts->zero ? '0' : ' ');
 }
 
-void	print_octal(va_list *valist, t_spec_flags *opts)
+void					print_octal(va_list *valist, t_spec_flags *opts)
 {
 	uintmax_t octal;
 
@@ -161,7 +141,7 @@ void	print_octal(va_list *valist, t_spec_flags *opts)
 	if (!opts->minus)
 		ft_putnchar(opts->width - ft_octlen(octal, (opts->sharp && octal != 0)), opts->zero ? '0' : ' ');
 	ft_putnchar(opts->precision - ft_octlen(octal, (opts->sharp && octal != 0)), '0');
-	if (!opts->precision_set || (octal != 0 &&opts->precision > 0))
+	if (!opts->precision_set || (octal != 0 && opts->precision > 0))
 		ft_putoctal(octal, (opts->sharp && octal != 0));
 	if (opts->minus)
 		ft_putnchar(opts->width - ft_octlen(octal, (opts->sharp && octal != 0)), opts->zero ? '0' : ' ');

@@ -1,62 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lltoa.c                                         :+:      :+:    :+:   */
+/*   ft_octulltoa.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/12/23 14:39:04 by nmeier            #+#    #+#             */
-/*   Updated: 2014/12/23 14:39:07 by nmeier           ###   ########.fr       */
+/*   Created: 2014/12/23 14:20:59 by nmeier            #+#    #+#             */
+/*   Updated: 2014/12/23 14:22:16 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
-#include "libft.h"
+#include <stdlib.h>
 
-int			ft_ll_len(long long int nbr)
+int			ft_octlen(uintmax_t oct, int prefix)
 {
 	int result;
 
-	result = 1LL;
-	if (nbr < 0)
-	{
-		nbr = -nbr;
+	result = 1;
+	if (prefix)
 		result++;
-	}
-	while (nbr >= 10LL)
+	while (oct >= 8)
 	{
-		nbr /= 10LL;
 		result++;
+		oct /= 8;
 	}
 	return (result);
 }
 
-char		*ft_lltoa(long long int nbr)
+char		*ft_octulltoa(unsigned long long octal, int prefix)
 {
-	char	*result;
 	char	*str;
+	char	*first;
 	int		len;
 
-	if (nbr < -9223372036854775807)
-		return (ft_strdup("-9223372036854775808"));
-	len = ft_ll_len(nbr);
+	len = ft_octlen(octal, prefix);
 	str = (char*)malloc(sizeof(char) * (len + 1));
-	result = str;
-	str[len] = '\0';
-	if (nbr < 0)
+	if (str)
 	{
-		nbr = -nbr;
-		*str = '-';
+		first = str;
+		if (prefix)
+			str[0] = '0';
+		str[len] = '\0';
+		str += len - 1;
+		while (octal >= 8)
+		{
+			*str = octal % 8 + '0';
+			str--;
+			octal /= 8;
+		}
+		*str = octal % 8 + '0';
 	}
-	str += len - 1;
-	while (nbr >= 10LL)
-	{
-		*str = (nbr % 10LL) + '0';
-		nbr /= 10LL;
-		str--;
-	}
-	*str = (nbr % 10LL) + '0';
-	return (result);
+	return (first);
 }

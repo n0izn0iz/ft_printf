@@ -71,7 +71,7 @@ typedef struct 		s_printf_args
 
 int					ft_printf(const char * format, ...);
 void				ft_puthex(size_t hex, int prefix, int caps);
-void				ft_putoctal(unsigned int octal, int prefix);
+void				ft_putoctal(uintmax_t octal, int prefix);
 int 				split_args(const char *str, va_list *valist, t_printf_args *args);
 char				*ft_ulltoa(unsigned long long int nbr);
 char				*ft_lltoa(long long int nbr);
@@ -81,6 +81,8 @@ int					ft_hexlen(uintmax_t hex, int prefix);
 char				*ft_hextoa(uintmax_t hex, int prefix, int caps);
 int			ft_wstrlen (wint_t* wstr);
 void		ft_putnstr(char *str, int n);
+size_t		ft_wcrtomb(char *s, wchar_t wchar);
+char	*ft_octulltoa(unsigned long long octal, int prefix);
 
 void		ft_putnwchar(wchar_t *wchar, int n);
 

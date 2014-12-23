@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_args.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/12/23 14:21:41 by nmeier            #+#    #+#             */
+/*   Updated: 2014/12/23 14:21:47 by nmeier           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdarg.h>
 #include <stdio.h>
 #include "ft_printf.h"
 #include "libft.h"
 #include <wchar.h>
 
-int 	fill_width(const char *str, t_spec_flags *flags)
+int		fill_width(const char *str, t_spec_flags *flags)
 {
-	int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	while (ft_isdigit(str[i]))
@@ -18,11 +30,10 @@ int 	fill_width(const char *str, t_spec_flags *flags)
 	return (i);
 }
 
-int 	fill_flags(const char *str, t_spec_flags *flags)
+int		fill_flags(const char *str, t_spec_flags *flags)
 {
 	int i;
 
-	
 	i = 0;
 	while (str[i])
 	{
@@ -40,10 +51,10 @@ int 	fill_flags(const char *str, t_spec_flags *flags)
 			break ;
 		i++;
 	}
-	return i;
+	return (i);
 }
 
-int 	fill_lenght(const char *str, t_spec_flags *flags)
+int		fill_lenght(const char *str, t_spec_flags *flags)
 {
 	if (str[0] == 'h')
 	{
@@ -54,7 +65,6 @@ int 	fill_lenght(const char *str, t_spec_flags *flags)
 		}
 		flags->len_mod = LM_H;
 		return (1);
-		
 	}
 	else if (str[0] == 'l')
 	{
@@ -79,10 +89,10 @@ int 	fill_lenght(const char *str, t_spec_flags *flags)
 	return (0);
 }
 
-int 	fill_precision(const char *str, t_spec_flags *flags)
+int		fill_precision(const char *str, t_spec_flags *flags)
 {
-	int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	if (str[i++] != '.')
@@ -90,18 +100,19 @@ int 	fill_precision(const char *str, t_spec_flags *flags)
 	flags->precision_set = 1;
 	while (ft_isdigit(str[i]))
 		i++;
-	flags->precision = ft_atoi((tmp = ft_strsub(str, 1, i)));
+	tmp = ft_strsub(str, 1, i);
+	flags->precision = ft_atoi(tmp);
 	free(tmp);
 	return (i);
 }
 
-int 	split_args(const char *str, va_list *valist, t_printf_args *args)
+int		split_args(const char *str, va_list *valist, t_printf_args *args)
 {
-	int 	strstart;
-	int 	index;
-	int 	i;
+	int				strstart;
+	int				index;
+	int				i;
 	t_printf_var	*spec;
-	char 	c;
+	char			c;
 
 	i = 0;
 	index = 0;
@@ -109,7 +120,7 @@ int 	split_args(const char *str, va_list *valist, t_printf_args *args)
 	while ((c = str[i]) != '\0')
 	{
 		if (c == '%')
-		{	
+		{
 			spec = args->data + index;
 			args->strings[index] = ft_strsub(str, strstart, i - strstart);
 			ft_putstr(args->strings[index]);

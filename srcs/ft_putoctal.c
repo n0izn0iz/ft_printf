@@ -1,32 +1,24 @@
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putoctal.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/12/23 14:21:14 by nmeier            #+#    #+#             */
+/*   Updated: 2014/12/23 14:22:21 by nmeier           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
+#include "ft_printf.h"
 #include "libft.h"
-
-int 			ft_octlen(uintmax_t oct, int prefix)
-{
-	int result;
-
-	result = 1;
-	if (prefix)
-		result ++;
-	while (oct >= 8)
-	{
-		result++;
-		oct /= 8;
-	}
-	return (result);
-}
-
-static void putoctal_recursion(uintmax_t octal)
-{
-	if (octal >= 8)
-		putoctal_recursion(octal / 8);
-	ft_putchar((octal % 8) + '0');
-}
 
 void	ft_putoctal(uintmax_t octal, int prefix)
 {
-	if (prefix)
-		ft_putchar('0');
-	putoctal_recursion(octal);
+	char *tmp;
+
+	tmp = ft_octulltoa(octal, prefix);
+	ft_putstr(tmp);
+	free(tmp);
 }
