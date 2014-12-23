@@ -84,10 +84,10 @@ int 	fill_precision(const char *str, t_spec_flags *flags)
 	int i;
 	char *tmp;
 
-	flags->precision = 1;
 	i = 0;
 	if (str[i++] != '.')
 		return (0);
+	flags->precision_set = 1;
 	while (ft_isdigit(str[i]))
 		i++;
 	flags->precision = ft_atoi((tmp = ft_strsub(str, 1, i)));

@@ -41,6 +41,7 @@ typedef struct 		s_spec_flags
 	t_len_mod 	len_mod;
 	int 		width;
 	int 		precision;
+	int 		precision_set;
 } 					t_spec_flags;
 
 typedef union 		u_typeunion
@@ -78,6 +79,10 @@ int					ft_ll_len(long long int nbr);
 int					ft_ull_len(unsigned long long int nbr);
 int					ft_hexlen(uintmax_t hex, int prefix);
 char				*ft_hextoa(uintmax_t hex, int prefix, int caps);
+int			ft_wstrlen (wint_t* wstr);
+void		ft_putnstr(char *str, int n);
+
+void		ft_putnwchar(wchar_t *wchar, int n);
 
 void	print_uint(va_list *valist, t_spec_flags *opts);
 void	print_int(va_list *valist, t_spec_flags *opts);

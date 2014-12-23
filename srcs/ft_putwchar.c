@@ -16,6 +16,16 @@
 #define PF_GEN_AND			0b00111111
 #define PF_GEN_MASK			0b10000000
 
+int			ft_wstrlen (wint_t* wstr)
+{
+	int i;
+
+	i = 0;
+	while (wstr[i] != L'\0')
+		i++;
+	return (i);
+}
+
 int			getmsb (unsigned long long x)
 {
     int r = 0;
@@ -39,37 +49,60 @@ void		print_bits(uintmax_t bits, int n)
 
 void		ft_putwchar(wint_t wchar)
 {
-	int	msb = getmsb(wchar);
-	unsigned int	temp[4];
-	unsigned int	conversion;
-	if (msb <= 6)
-		write(1, &wchar, 1);
+	int	msb = getmsb(wchar) + 1;
+	char	temp[4];
+
+	if (msb <= 7)
+	{
+		write(1, &(wchar), 1);
+	}
 	else if (msb <= 11)
 	{
-		temp[1] = (wchar & PF_GEN_AND) | PF_GEN_MASK;
 		temp[0] = (((wchar >> 6) & PF_GEN_AND) & PF_16BIT_AND) | PF_16BIT_MASK;
-		write(1, &(temp[0]), 1);
-		write(1, &(temp[1]), 1);
+		temp[1] = (wchar & PF_GEN_AND) | PF_GEN_MASK;
+		write(1, temp, 2);
 	}
 	else if (msb <= 16)
 	{ 
-		ft_putstr("found 3 byte char: ");
-		conversion = ((temp[2] & PF_16BIT_AND) | PF_16BIT_MASK) + ((temp[1] & PF_GEN_AND) | PF_GEN_MASK) + ((temp[0] & PF_GEN_AND) | PF_GEN_MASK);
-		write(1, &conversion, 3);
+		temp[0] = (((wchar >> 12) & PF_GEN_AND) & PF_32BIT_AND) | PF_32BIT_MASK;
+		temp[1] = ((wchar >> 6) & PF_GEN_AND) | PF_GEN_MASK;
+		temp[2] = (wchar & PF_GEN_AND) | PF_GEN_MASK;
+		write(1, temp, 3);
 	}
 	else
 	{
-		ft_putstr("found 4 byte char\n");
-		conversion = ((temp[3] & PF_16BIT_AND) | PF_16BIT_MASK) + ((temp[2] & PF_GEN_AND) | PF_GEN_MASK) + ((temp[1] & PF_GEN_AND) | PF_GEN_MASK) + ((temp[0] & PF_GEN_AND) | PF_GEN_MASK);
-		write(1, &conversion, 4);
+
+		write(1, temp, 4);
 	}
 }
 
-void		ft_putwstr(wint_t *str)
+void		ft_putwstr(wchar_t *str)
 {
 	while (*str)
 	{
 		ft_putwchar(*str);
 		str++;
+	}
+}
+
+int			ft_min(int a, int b)
+{
+	return (a < b ? a : b);
+}
+
+void		ft_putnstr(char *str, int n)
+{
+	write(1, str, ft_min(ft_strlen(str), n));
+}
+
+void		ft_putnwchar(wchar_t *wchar, int n)
+{
+	int i;
+
+	i = 0;
+	while (*wchar && i < n)
+	{
+		ft_putwchar(*wchar);
+		i++;
 	}
 }

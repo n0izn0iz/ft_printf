@@ -31,11 +31,13 @@ void	print_int(va_list *valist, t_spec_flags *opts)
 		str = ft_lltoa(va_arg(*valist, int));
 	if (!opts->minus)
 		ft_putnchar(opts->width - ft_strlen(str) + (((opts->plus || opts->space) && *str != '-') ? 1 : 0), opts->zero ? '0' : ' ');
+	ft_putnchar(opts->precision - ft_strlen(str), '0');
 	if (opts->plus && *str != '-')
 		ft_putchar('+');
 	else if (opts->space && *str != '-')
 		ft_putchar(' ');
-	ft_putstr(str);
+	if (!opts->precision_set || (ft_strcmp(str, "0") && opts->precision > 0))
+		ft_putstr(str);
 	if (opts->minus)
 		ft_putnchar(opts->width - ft_strlen(str) + (((opts->plus || opts->space) && *str != '-') ? 1 : 0), opts->zero ? '0' : ' ');
 	free(str);
@@ -60,11 +62,13 @@ void	print_uint(va_list *valist, t_spec_flags *opts)
 		str = ft_ulltoa(va_arg(*valist, unsigned int));
 	if (!opts->minus)
 		ft_putnchar(opts->width - ft_strlen(str) + (opts->plus ? 1 : 0), opts->zero ? '0' : ' ');
+	ft_putnchar(opts->precision - ft_strlen(str), '0');
 	if (opts->plus)
 		ft_putchar('+');
 	else if (opts->space)
 		ft_putchar(' ');
-	ft_putstr(str);
+	if (!opts->precision_set || (ft_strcmp(str, "0") && opts->precision > 0))
+		ft_putstr(str);
 	if (opts->minus)
 		ft_putnchar(opts->width - ft_strlen(str) + (opts->plus ? 1 : 0), opts->zero ? '0' : ' ');
 	free(str);
@@ -72,18 +76,25 @@ void	print_uint(va_list *valist, t_spec_flags *opts)
 
 void	print_str(va_list *valist, t_spec_flags *opts)
 {
-	char *str;
+	int 	len;
+	char 	*str;
+	wchar_t	*wstr;
+
 	if (opts->len_mod == LM_L)
-		ft_putwstr(va_arg(*valist, wint_t*));
+	{
+		wstr = va_arg(*valist, wchar_t*);
+		len = ft_wstrlen(wstr);
+	}
 	else
 	{
 		str = va_arg(*valist, char*);
-		if (!opts->minus)
-			ft_putnchar(opts->width - ft_strlen(str), opts->zero ? '0' : ' ');
-		ft_putstr(str);
-		if (opts->minus)
-			ft_putnchar(opts->width - ft_strlen(str), opts->zero ? '0' : ' ');
+		len = ft_strlen(str);
 	}
+	if (!opts->minus)
+		ft_putnchar(opts->width - len, opts->zero ? '0' : ' ');
+	opts->len_mod == LM_L ? ft_putnwchar(wstr, opts->precision_set ? opts->precision : len) : ft_putnstr(str, opts->precision_set ? opts->precision : len);
+	if (opts->minus)
+		ft_putnchar(opts->width - len, opts->zero ? '0' : ' ');
 }
 
 void	print_char(va_list *valist, t_spec_flags *opts)
@@ -120,9 +131,11 @@ void	print_hex(va_list *valist, t_spec_flags *opts, char c)
 		hex = va_arg(*valist, unsigned int);
 	str = ft_hextoa(hex, c == 'p' || (opts->sharp && hex != 0), c == 'X');
 	len = ft_strlen(str);
+	ft_putnchar(opts->precision - len, '0');
 	if (!opts->minus)
 		ft_putnchar(opts->width - len, opts->zero ? '0' : ' ');
-	ft_putstr(str);
+	if (!opts->precision_set || (hex != 0 &&opts->precision > 0))
+		ft_putstr(str);
 	if (opts->minus)
 		ft_putnchar(opts->width - len, opts->zero ? '0' : ' ');
 }
@@ -130,6 +143,7 @@ void	print_hex(va_list *valist, t_spec_flags *opts, char c)
 void	print_octal(va_list *valist, t_spec_flags *opts)
 {
 	uintmax_t octal;
+
 	if (opts->len_mod == LM_HH)
 		octal = (unsigned char)va_arg(*valist, unsigned int);
 	else if (opts->len_mod == LM_H)
@@ -146,7 +160,9 @@ void	print_octal(va_list *valist, t_spec_flags *opts)
 		octal = va_arg(*valist, unsigned int);
 	if (!opts->minus)
 		ft_putnchar(opts->width - ft_octlen(octal, (opts->sharp && octal != 0)), opts->zero ? '0' : ' ');
-	ft_putoctal(octal, (opts->sharp && octal != 0));
+	ft_putnchar(opts->precision - ft_octlen(octal, (opts->sharp && octal != 0)), '0');
+	if (!opts->precision_set || (octal != 0 &&opts->precision > 0))
+		ft_putoctal(octal, (opts->sharp && octal != 0));
 	if (opts->minus)
 		ft_putnchar(opts->width - ft_octlen(octal, (opts->sharp && octal != 0)), opts->zero ? '0' : ' ');
 }
