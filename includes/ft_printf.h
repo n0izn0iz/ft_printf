@@ -83,6 +83,8 @@ int			ft_wstrlen (wint_t* wstr);
 void		ft_putnstr(char *str, int n);
 size_t		ft_wcrtomb(char *s, wchar_t wchar);
 char	*ft_octulltoa(unsigned long long octal, int prefix);
+uintmax_t		printf_uintcast(va_list *valist, t_spec_flags *opts);
+intmax_t		printf_intcast(va_list *valist, t_spec_flags *opts);
 
 void		ft_putnwchar(wchar_t *wchar, int n);
 
