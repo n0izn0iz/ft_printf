@@ -6,7 +6,7 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:21:41 by nmeier            #+#    #+#             */
-/*   Updated: 2014/12/23 14:21:47 by nmeier           ###   ########.fr       */
+/*   Updated: 2014/12/31 12:43:25 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int		fill_lenght(const char *str, t_spec_flags *flags)
 			return (2);
 		}
 		flags->len_mod = LM_H;
-		return (1);
 	}
 	else if (str[0] == 'l')
 	{
@@ -74,19 +73,14 @@ int		fill_lenght(const char *str, t_spec_flags *flags)
 			return (2);
 		}
 		flags->len_mod = LM_L;
-		return (1);
 	}
 	else if (str[0] == 'j')
-	{
 		flags->len_mod = LM_J;
-		return (1);
-	}
 	else if (str[0] == 'z')
-	{
 		flags->len_mod = LM_Z;
-		return (1);
-	}
-	return (0);
+	else
+		return (0);
+	return (1);
 }
 
 int		fill_precision(const char *str, t_spec_flags *flags)
@@ -106,52 +100,31 @@ int		fill_precision(const char *str, t_spec_flags *flags)
 	return (i);
 }
 
-int		split_args(const char *str, va_list *valist, t_printf_args *args)
+int		fill_arg(int i, va_list *valist, const char *str, t_printf_var *spec)
 {
-	int				strstart;
-	int				index;
-	int				i;
-	t_printf_var	*spec;
-	char			c;
+	char c;
 
-	i = 0;
-	index = 0;
-	strstart = 0;
-	while ((c = str[i]) != '\0')
-	{
-		if (c == '%')
-		{
-			spec = args->data + index;
-			args->strings[index] = ft_strsub(str, strstart, i - strstart);
-			ft_putstr(args->strings[index]);
-			ft_bzero(&(spec->flags), sizeof(t_spec_flags));
-			i += fill_flags(str + i + 1, &(spec->flags)) + 1;
-			i += fill_width(str + i, &(spec->flags));
-			i += fill_precision(str + i, &(spec->flags));
-			i += fill_lenght(str + i, &(spec->flags));
-			c = str[i];
-			if (c == 'S' || c == 'C' || c == 'D' || c == 'U' || c == 'O')
-				spec->flags.len_mod = LM_L;
-			if (c == 'd' || c == 'i' || c == 'D')
-				print_int(valist, &(spec->flags));
-			else if (c == 'u' || c == 'U')
-				print_uint(valist, &(spec->flags));
-			else if (c == 's' || c == 'S')
-				print_str(valist, &(spec->flags));
-			else if (c == 'c' || c == 'C')
-				print_char(valist, &(spec->flags));
-			else if (c == 'p' || c == 'x' || c == 'X')
-				print_hex(valist, &(spec->flags), c);
-			else if (c == 'o' || c == 'O')
-				print_octal(valist, &(spec->flags));
-			else if (c == '%')
-				ft_putchar(c);
-			strstart = i + 1;
-			++index;
-		}
-		++i;
-	}
-	args->strings[index] = ft_strsub(str, strstart, i - strstart);
-	ft_putstr(args->strings[index]);
-	return (index);
+	ft_bzero(&(spec->flags), sizeof(t_spec_flags));
+	i += fill_flags(str + i + 1, &(spec->flags)) + 1;
+	i += fill_width(str + i, &(spec->flags));
+	i += fill_precision(str + i, &(spec->flags));
+	i += fill_lenght(str + i, &(spec->flags));
+	c = str[i];
+	if (c == 'S' || c == 'C' || c == 'D' || c == 'U' || c == 'O')
+		spec->flags.len_mod = LM_L;
+	if (c == 'd' || c == 'i' || c == 'D')
+		print_int(valist, &(spec->flags));
+	else if (c == 'u' || c == 'U')
+		print_uint(valist, &(spec->flags));
+	else if (c == 's' || c == 'S')
+		print_str(valist, &(spec->flags));
+	else if (c == 'c' || c == 'C')
+		print_char(valist, &(spec->flags));
+	else if (c == 'p' || c == 'x' || c == 'X')
+		print_hex(valist, &(spec->flags), c);
+	else if (c == 'o' || c == 'O')
+		print_octal(valist, &(spec->flags));
+	else if (c == '%')
+		ft_putchar(c);
+	return (i);
 }

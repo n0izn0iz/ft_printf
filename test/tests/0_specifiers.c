@@ -4,7 +4,7 @@
 
 #define CMD0 "00_%%c: %c %c %c %c %c %c\n", '0', '3', '7', 'A', 'b', 'C'
 #define CMD0a "00a_%%C: %C, %C, %C, %C, %C\n", L'À', L'ï', L'ê', L'ç', 945
-#define CMD1 "01_%%s: %s %s %s %s %s %s\n", "Hello", "ceci", "est", "un", "test", ""
+#define CMD1 "01_%%s: %s %s %s %s %s %s %s\n", "Hello", "ceci", "est", "un", "test", "", NULL
 #define CMD1a "01a_%%S: %S, %S, %S, %S, %S\n", L"cécï", L"è", L"ün", L"têst", L""
 #define CMD2 "02_%%i: %i %i %i %i %i %i\n", 0, 42, -7, 7, (int)INT32_MAX, (int)INTMAX_MIN
 #define CMD3 "03_%%d: %d %d %d %d %d %d\n", 0, 42, -7, 7, (int)INT32_MAX, (int)INTMAX_MIN
