@@ -6,7 +6,11 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:21:41 by nmeier            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2015/01/02 14:50:46 by nmeier           ###   ########.fr       */
+=======
+/*   Updated: 2014/12/31 12:43:25 by nmeier           ###   ########.fr       */
+>>>>>>> d3686981f0450660f05684c16fc6741578e4cfaf
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +105,7 @@ int		fill_precision(const char *str, t_spec_flags *flags)
 	return (i);
 }
 
+<<<<<<< HEAD
 int		fill_arg(int i, va_list *valist, const char *str)
 {
 	char			c;
@@ -125,6 +130,32 @@ int		fill_arg(int i, va_list *valist, const char *str)
 		print_hex(valist, &opts, c);
 	else if (c == 'o' || c == 'O')
 		print_octal(valist, &opts);
+=======
+int		fill_arg(int i, va_list *valist, const char *str, t_printf_var *spec)
+{
+	char c;
+
+	ft_bzero(&(spec->flags), sizeof(t_spec_flags));
+	i += fill_flags(str + i + 1, &(spec->flags)) + 1;
+	i += fill_width(str + i, &(spec->flags));
+	i += fill_precision(str + i, &(spec->flags));
+	i += fill_lenght(str + i, &(spec->flags));
+	c = str[i];
+	if (c == 'S' || c == 'C' || c == 'D' || c == 'U' || c == 'O')
+		spec->flags.len_mod = LM_L;
+	if (c == 'd' || c == 'i' || c == 'D')
+		print_int(valist, &(spec->flags));
+	else if (c == 'u' || c == 'U')
+		print_uint(valist, &(spec->flags));
+	else if (c == 's' || c == 'S')
+		print_str(valist, &(spec->flags));
+	else if (c == 'c' || c == 'C')
+		print_char(valist, &(spec->flags));
+	else if (c == 'p' || c == 'x' || c == 'X')
+		print_hex(valist, &(spec->flags), c);
+	else if (c == 'o' || c == 'O')
+		print_octal(valist, &(spec->flags));
+>>>>>>> d3686981f0450660f05684c16fc6741578e4cfaf
 	else if (c == '%')
 		ft_putchar(c);
 	return (i);
