@@ -6,16 +6,17 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:21:09 by nmeier            #+#    #+#             */
-/*   Updated: 2014/12/23 14:22:19 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/02 14:15:54 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
-#include <stdio.h>
-#include "ft_printf.h"
+#include <stdlib.h>
+#include "ft_vartoa.h"
+#include "ft_varlen.h"
 #include "libft.h"
 
-void			ft_puthex(size_t hex, int prefix, int caps)
+void			ft_puthex(uintmax_t hex, int prefix, int caps)
 {
 	char		*str;
 

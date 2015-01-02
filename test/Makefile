@@ -1,5 +1,5 @@
 SRCS = $(wildcard tests/*.c)
-PRINTF_OBJS = $(wildcard ../objs/*.o)
+PRINTF = ../libftprintf.a
 LIBFT = ../../libft/libft.a
 OBJS = $(patsubst tests/%.c, objs/%.o, $(SRCS))
 STD_TEST_BINS = $(patsubst objs/%.o, bins/std_%, $(OBJS))
@@ -8,7 +8,7 @@ CFLAGS = #-Wall -Wextra -Werror
 
 all: test
 
-$(PRINTF_OBJS):
+$(PRINTF):
 	make re -C ..
 
 $(LIBFT):
@@ -20,10 +20,10 @@ objs/%.o: tests/%.c
 %.o: %.c
 	gcc -c $^ -o $@ $(CLFAGS) -I ../includes
 
-bins/std_%: objs/%.o main_std.o $(PRINTF_OBJS) $(LIBFT)
+bins/std_%: objs/%.o main_std.o $(PRINTF) $(LIBFT)
 	gcc -o $@ $^
 
-bins/own_%: objs/%.o main_own.o $(PRINTF_OBJS) $(LIBFT)
+bins/own_%: objs/%.o main_own.o $(PRINTF) $(LIBFT)
 	gcc -o $@ $^
 
 test: $(STD_TEST_BINS) $(OWN_TEST_BINS)

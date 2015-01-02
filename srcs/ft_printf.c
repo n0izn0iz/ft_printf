@@ -6,47 +6,48 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:21:05 by nmeier            #+#    #+#             */
-/*   Updated: 2014/12/23 14:22:18 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/02 14:51:06 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdarg.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include "libft.h"
-#include "ft_printf.h"
+#include "ft_printf_impl.h"
 
-int		count_specifiers(const char *str)
+static void	split_args(const char *str, va_list *valist)
 {
-	int count;
+	int				strstart;
+	int				i;
+	char			*tmp;
 
-	count = 0;
-	while (*str)
+	i = 0;
+	strstart = 0;
+	while (str[i] != '\0')
 	{
-		if (*str == '%')
+		if (str[i] == '%')
 		{
-			count++;
-			if (*(str + 1) != '\0')
-				str++;
+			tmp = ft_strsub(str, strstart, i - strstart);
+			ft_putstr(tmp);
+			free(tmp);
+			i = fill_arg(i, valist, str);
+			strstart = i + 1;
 		}
-		str++;
+		++i;
 	}
-	return (count);
+	tmp = ft_strsub(str, strstart, i - strstart);
+	ft_putstr(tmp);
+	free(tmp);
 }
 
-int		ft_printf(const char *format, ...)
+int			ft_printf(const char *format, ...)
 {
 	va_list			valist;
-	t_printf_args	args;
 
-	args.spec_count = count_specifiers(format);
-	args.strings = (char**)ft_memalloc(sizeof(char*)
-		* (args.spec_count + 1 + 1));
-	args.data = (t_printf_var*)ft_memalloc(sizeof(t_printf_var)
-		* (args.spec_count + 1));
 	va_start(valist, format);
-	split_args(format, &valist, &args);
+	split_args(format, &valist);
 	va_end(valist);
-	free(args.data);
 	return (0);
 }

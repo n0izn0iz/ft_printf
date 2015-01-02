@@ -6,14 +6,17 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:21:33 by nmeier            #+#    #+#             */
-/*   Updated: 2014/12/23 14:21:56 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/02 14:53:24 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdarg.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <unistd.h>
-#include "ft_printf.h"
+#include "ft_printf_impl.h"
+#include "ft_varlen.h"
+#include "ft_putvar.h"
 #include "libft.h"
 
 static inline void		ft_putnchar(int nbr, char c)
@@ -25,28 +28,53 @@ static inline void		ft_putnchar(int nbr, char c)
 	}
 }
 
+static char				*caststr(va_list *valist, int *len)
+{
+	char *str;
+
+	str = va_arg(*valist, char*);
+	if (!str)
+	{
+		ft_putstr("(null)");
+		return (NULL);
+	}
+	*len = ft_strlen(str);
+	return (str);
+}
+
+static wchar_t			*castwstr(va_list *valist, int *len)
+{
+	wchar_t		*wstr;
+
+	wstr = va_arg(*valist, wchar_t*);
+	if (!wstr)
+	{
+		ft_putstr("(null)");
+		return (NULL);
+	}
+	*len = ft_wstrlen(wstr);
+	return (wstr);
+}
+
 void					print_str(va_list *valist, t_spec_flags *opts)
 {
 	int		len;
-	char	*str;
-	wchar_t	*wstr;
+	void	*str;
 
+	str = NULL;
 	if (opts->len_mod == LM_L)
-	{
-		wstr = va_arg(*valist, wchar_t*);
-		len = ft_wstrlen(wstr);
-	}
+		str = castwstr(valist, &len);
 	else
-	{
-		str = va_arg(*valist, char*);
-		len = ft_strlen(str);
-	}
+		str = caststr(valist, &len);
+	if (!str)
+		return ;
 	if (!opts->minus)
 		ft_putnchar(opts->width - len, opts->zero ? '0' : ' ');
 	if (opts->len_mod == LM_L)
-		ft_putnwchar(wstr, opts->precision_set ? opts->precision : len);
+		ft_putnwchar((wchar_t*)str, \
+			opts->precision_set ? opts->precision : len);
 	else
-		ft_putnstr(str, opts->precision_set ? opts->precision : len);
+		ft_putnstr((char*)str, opts->precision_set ? opts->precision : len);
 	if (opts->minus)
 		ft_putnchar(opts->width - len, opts->zero ? '0' : ' ');
 }

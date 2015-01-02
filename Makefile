@@ -1,10 +1,13 @@
-NAME = test_printf
+NAME = libftprintf.a
 LIBFT = objs/libft.a
 SRCS = $(wildcard srcs/*.c)
 OBJS = $(patsubst srcs/%.c, objs/%.o, $(SRCS))
 FLAGS = -Wall -Wextra -Werror
 
-all: $(OBJS)
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	ar -rcs $@ $^
 
 objs/%.o: srcs/%.c
 	gcc -c $< -o $@ $(FLAGS) -Iincludes -I../libft

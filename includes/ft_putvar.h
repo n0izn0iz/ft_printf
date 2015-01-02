@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putoctal.c                                      :+:      :+:    :+:   */
+/*   ft_putvar.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/12/23 14:21:14 by nmeier            #+#    #+#             */
-/*   Updated: 2015/01/02 14:51:37 by nmeier           ###   ########.fr       */
+/*   Created: 2015/01/02 14:33:20 by nmeier            #+#    #+#             */
+/*   Updated: 2015/01/02 14:33:42 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdint.h>
-#include <stdlib.h>
-#include "ft_printf_impl.h"
-#include "libft.h"
-#include "ft_vartoa.h"
+#ifndef FT_PUTVAR_H
+# define FT_PUTVAR_H
 
-void	ft_putoctal(uintmax_t octal, int prefix)
-{
-	char *tmp;
+void	ft_puthex(unsigned long long hex, int prefix, int caps);
+void	ft_putoctal(uintmax_t octal, int prefix);
+void	ft_putnstr(char *str, int n);
+void	ft_putnwchar(wchar_t *wchar, int n);
+void	ft_putwchar(wint_t wchar);
+void	ft_putwstr(wint_t *str);
 
-	tmp = ft_octulltoa(octal, prefix);
-	ft_putstr(tmp);
-	free(tmp);
-}
+#endif

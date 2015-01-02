@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putoctal.c                                      :+:      :+:    :+:   */
+/*   ft_vartoa.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/12/23 14:21:14 by nmeier            #+#    #+#             */
-/*   Updated: 2015/01/02 14:51:37 by nmeier           ###   ########.fr       */
+/*   Created: 2015/01/02 14:34:16 by nmeier            #+#    #+#             */
+/*   Updated: 2015/01/02 14:34:37 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdint.h>
-#include <stdlib.h>
-#include "ft_printf_impl.h"
-#include "libft.h"
-#include "ft_vartoa.h"
+#ifndef FT_VARTOA_H
+# define FT_VARTOA_H
 
-void	ft_putoctal(uintmax_t octal, int prefix)
-{
-	char *tmp;
+char				*ft_ulltoa(unsigned long long int nbr);
+char				*ft_lltoa(long long int nbr);
+char				*ft_hextoa(uintmax_t hex, int prefix, int caps);
+char				*ft_octulltoa(unsigned long long octal, int prefix);
 
-	tmp = ft_octulltoa(octal, prefix);
-	ft_putstr(tmp);
-	free(tmp);
-}
+#endif

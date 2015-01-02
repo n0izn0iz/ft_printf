@@ -6,14 +6,12 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:47:18 by nmeier            #+#    #+#             */
-/*   Updated: 2014/12/23 14:47:20 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/02 13:24:30 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <wchar.h>
 
-#define PF_8BIT_AND			0b01111111
-#define PF_8BIT_MASK		0b00000000
 #define PF_16BIT_AND		0b00011111
 #define PF_16BIT_MASK		0b11000000
 #define PF_24BIT_AND		0b00001111

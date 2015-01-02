@@ -6,17 +6,17 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:21:18 by nmeier            #+#    #+#             */
-/*   Updated: 2014/12/23 14:22:22 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/02 14:52:42 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdlib.h>
 #include <wchar.h>
-#include <stdio.h>
 #include <stdint.h>
 
 #include "libft.h"
-#include "ft_printf.h"
+#include "ft_printf_impl.h"
 
 int			ft_wstrlen(wint_t *wstr)
 {

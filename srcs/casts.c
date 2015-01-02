@@ -6,14 +6,14 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 15:05:27 by nmeier            #+#    #+#             */
-/*   Updated: 2014/12/23 15:05:29 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/02 14:39:58 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stdarg.h>
 
-#include "ft_printf.h"
+#include "ft_printf_impl.h"
 
 intmax_t		printf_intcast(va_list *valist, t_spec_flags *opts)
 {

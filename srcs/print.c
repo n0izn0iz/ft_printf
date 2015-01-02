@@ -6,14 +6,19 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:21:33 by nmeier            #+#    #+#             */
-/*   Updated: 2014/12/23 14:21:56 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/02 14:52:58 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdarg.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <unistd.h>
-#include "ft_printf.h"
+#include <wchar.h>
+#include "ft_putvar.h"
+#include "ft_varlen.h"
+#include "ft_vartoa.h"
+#include "ft_printf_impl.h"
 #include "libft.h"
 
 static inline void		ft_putnchar(int nbr, char c)
