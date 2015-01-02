@@ -6,7 +6,7 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:21:33 by nmeier            #+#    #+#             */
-/*   Updated: 2015/01/02 14:52:58 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/02 16:10:08 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,18 @@ void					print_int(va_list *valist, t_spec_flags *opts)
 	str = ft_lltoa(nbr);
 	if (!opts->minus)
 		ft_putnchar(opts->width - ft_strlen(str) + (((opts->plus || opts->space)
-			&& *str != '-') ? 1 : 0), opts->zero ? '0' : ' ');
-	ft_putnchar(opts->precision - ft_strlen(str), '0');
+			&& *str != '-') ? 1 : 0), (opts->zero && !opts->precision_set) ? '0' : ' ');
 	if (opts->plus && *str != '-')
 		ft_putchar('+');
 	else if (opts->space && *str != '-')
 		ft_putchar(' ');
+	else if (*str == '-')
+		ft_putchar('-');
+	ft_putnchar(opts->precision - ft_strlen(str) + (nbr < 0 ? 1 : 0), '0');
 	if (!opts->precision_set || (ft_strcmp(str, "0") && opts->precision > 0))
-		ft_putstr(str);
+		ft_putstr(str + (nbr < 0 ? 1 : 0));
 	if (opts->minus)
-		ft_putnchar(opts->width - ft_strlen(str) + (((opts->plus || opts->space)
-			&& *str != '-') ? 1 : 0), opts->zero ? '0' : ' ');
+		ft_putnchar(opts->width - (ft_strlen(str) + (((opts->plus || opts->space) && *str != '-') ? 1 : 0) + (opts->zero ? 1 : 0)), ' ');
 	free(str);
 }
 
@@ -62,17 +63,12 @@ void					print_uint(va_list *valist, t_spec_flags *opts)
 	str = ft_ulltoa(nbr);
 	if (!opts->minus)
 		ft_putnchar(opts->width - ft_strlen(str) +
-			(opts->plus ? 1 : 0), opts->zero ? '0' : ' ');
+			(opts->plus ? 1 : 0), (opts->zero && !opts->precision_set) ? '0' : ' ');
 	ft_putnchar(opts->precision - ft_strlen(str), '0');
-	if (opts->plus)
-		ft_putchar('+');
-	else if (opts->space)
-		ft_putchar(' ');
 	if (!opts->precision_set || (ft_strcmp(str, "0") && opts->precision > 0))
 		ft_putstr(str);
 	if (opts->minus)
-		ft_putnchar(opts->width - ft_strlen(str) +
-			(opts->plus ? 1 : 0), opts->zero ? '0' : ' ');
+		ft_putnchar(opts->width - ft_strlen(str), ' ');
 	free(str);
 }
 
@@ -90,11 +86,11 @@ void					print_hex(va_list *valist, t_spec_flags *opts, char c)
 	len = ft_strlen(str);
 	ft_putnchar(opts->precision - len, '0');
 	if (!opts->minus)
-		ft_putnchar(opts->width - len, opts->zero ? '0' : ' ');
+		ft_putnchar(opts->width - len, opts->zero && !opts->precision_set ? '0' : ' ');
 	if (!opts->precision_set || (hex != 0 && opts->precision > 0))
 		ft_putstr(str);
 	if (opts->minus)
-		ft_putnchar(opts->width - len, opts->zero ? '0' : ' ');
+		ft_putnchar(opts->width - len, ' ');
 }
 
 void					print_octal(va_list *valist, t_spec_flags *opts)
@@ -104,12 +100,12 @@ void					print_octal(va_list *valist, t_spec_flags *opts)
 	octal = printf_uintcast(valist, opts);
 	if (!opts->minus)
 		ft_putnchar(opts->width - ft_octlen(octal,
-			(opts->sharp && octal != 0)), opts->zero ? '0' : ' ');
+			(opts->sharp && octal != 0)), opts->zero && !opts->precision_set ? '0' : ' ');
 	ft_putnchar(opts->precision - ft_octlen(octal,
 		(opts->sharp && octal != 0)), '0');
 	if (!opts->precision_set || (octal != 0 && opts->precision > 0))
 		ft_putoctal(octal, (opts->sharp && octal != 0));
 	if (opts->minus)
 		ft_putnchar(opts->width - ft_octlen(octal,
-			(opts->sharp && octal != 0)), opts->zero ? '0' : ' ');
+			(opts->sharp && octal != 0)), ' ');
 }

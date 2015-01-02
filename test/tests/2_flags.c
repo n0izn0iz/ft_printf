@@ -19,7 +19,7 @@
 #define CMD10 "210_-%%x  : %-10x %-30x %-10x %-10x %-30x %-10x\n", 42, -7, 7, (int)INTMAX_MAX, (int)INTMAX_MIN, 0xABCD
 #define CMD11 "211_-%%X  : %-10X %-30X %-10X %-10X %-30X %-10X\n", 42, -7, 7, (int)INTMAX_MAX, (int)INTMAX_MIN, 0xABCD
 #define CMD12 "212_-%%o  : %-1o %-5o %-10o %-5o %-10o\n", 123567, 1234567, 0, UINT32_MAX, INT32_MIN
-#define CMD12a"212a_-%%O : %-1O %-5O %-10O %-5O\n", 00, 042, 01337,  UINT32_MAX
+#define CMD12a "212a_-%%O : %-1O %-5O %-10O %-5O\n", 00, 042, 01337,  UINT32_MAX
 
 int		std_printf(void)
 {
