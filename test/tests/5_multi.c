@@ -3,12 +3,13 @@
 #include "ft_printf.h"
 
 #define CMD0 "00_%%#0 -10.5: %#0 -10.5i, %#0 -10.5i, %#0 -10.5u, %#0 -10.5o, %#0 -10.5x\n", 1337, -1337, 1234, 01234, 0x1234
+#define CMD1 "01_%%#+0-    : %#+0-i %#+0-u %#+0-o %#+0-x\n", 1337, 1337, 01337, 0x1337
 
 int		std_printf(void)
 {
 	printf(CMD0);
-	/*printf(CMD1);
-	printf(CMD2);
+	printf(CMD1);
+	/*printf(CMD2);
 	printf(CMD3);
 	printf(CMD4);
 	printf(CMD5);
@@ -21,8 +22,8 @@ int		std_printf(void)
 int		own_printf(void)
 {
 	ft_printf(CMD0);
-	/*ft_printf(CMD1);
-	ft_printf(CMD2);
+	ft_printf(CMD1);
+	/*ft_printf(CMD2);
 	ft_printf(CMD3);
 	ft_printf(CMD4);
 	ft_printf(CMD5);

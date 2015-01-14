@@ -6,7 +6,7 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:21:14 by nmeier            #+#    #+#             */
-/*   Updated: 2015/01/02 14:51:37 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/14 12:06:16 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 #include "libft.h"
 #include "ft_vartoa.h"
 
-void	ft_putoctal(uintmax_t octal, int prefix)
+void	ft_putoctal(uintmax_t octal)
 {
 	char *tmp;
 
-	tmp = ft_octulltoa(octal, prefix);
+	tmp = ft_octulltoa(octal);
 	ft_putstr(tmp);
 	free(tmp);
 }

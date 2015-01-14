@@ -6,7 +6,7 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:21:09 by nmeier            #+#    #+#             */
-/*   Updated: 2015/01/02 14:15:54 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/14 13:09:56 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 #include "ft_varlen.h"
 #include "libft.h"
 
-void			ft_puthex(uintmax_t hex, int prefix, int caps)
+void			ft_puthex(uintmax_t hex, int caps)
 {
 	char		*str;
 
-	str = ft_hextoa(hex, prefix, caps);
+	str = ft_hextoa(hex, caps);
 	ft_putstr(str);
 	free(str);
 }
@@ -38,22 +38,14 @@ static char		convert_digit(int digit, int caps)
 	}
 }
 
-char			*ft_hextoa(uintmax_t hex, int prefix, int caps)
+char			*ft_hextoa(uintmax_t hex, int caps)
 {
 	char		*str;
 	int			len;
 
-	len = ft_hexlen(hex, prefix);
-	str = malloc(sizeof(char) * (len + 1 + (prefix ? 2 : 0)));
+	len = ft_hexlen(hex);
+	str = malloc(sizeof(char) * (len + 1));
 	str[len] = '\0';
-	if (prefix)
-	{
-		str[0] = '0';
-		if (caps)
-			str[1] = 'X';
-		else
-			str[1] = 'x';
-	}
 	str += len - 1;
 	while (hex >= 16)
 	{
@@ -62,5 +54,5 @@ char			*ft_hextoa(uintmax_t hex, int prefix, int caps)
 		str--;
 	}
 	*str = convert_digit(hex % 16, caps);
-	return (str - (prefix ? 2 : 0));
+	return (str);
 }

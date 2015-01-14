@@ -6,20 +6,18 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:20:59 by nmeier            #+#    #+#             */
-/*   Updated: 2014/12/23 14:22:16 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/14 12:07:08 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stdlib.h>
 
-int			ft_octlen(uintmax_t oct, int prefix)
+int			ft_octlen(uintmax_t oct)
 {
 	int result;
 
 	result = 1;
-	if (prefix)
-		result++;
 	while (oct >= 8)
 	{
 		result++;
@@ -28,19 +26,17 @@ int			ft_octlen(uintmax_t oct, int prefix)
 	return (result);
 }
 
-char		*ft_octulltoa(unsigned long long octal, int prefix)
+char		*ft_octulltoa(unsigned long long octal)
 {
 	char	*str;
 	char	*first;
 	int		len;
 
-	len = ft_octlen(octal, prefix);
+	len = ft_octlen(octal);
 	str = (char*)malloc(sizeof(char) * (len + 1));
 	if (str)
 	{
 		first = str;
-		if (prefix)
-			str[0] = '0';
 		str[len] = '\0';
 		str += len - 1;
 		while (octal >= 8)
