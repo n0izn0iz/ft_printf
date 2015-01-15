@@ -1,26 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putoctal.c                                      :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/12/23 14:21:14 by nmeier            #+#    #+#             */
-/*   Updated: 2015/01/15 11:28:33 by nmeier           ###   ########.fr       */
+/*   Created: 2014/11/06 13:44:36 by nmeier            #+#    #+#             */
+/*   Updated: 2015/01/15 11:18:36 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdint.h>
-#include <stdlib.h>
+#include <unistd.h>
 #include "misc.h"
-#include "ft_printf_impl.h"
-#include "ft_vartoa.h"
 
-void	ft_putoctal(uintmax_t octal)
+void ft_putstr(char const *s)
 {
-	char *tmp;
-
-	tmp = ft_octulltoa(octal);
-	ft_putstr(tmp);
-	free(tmp);
+	write(1, s, ft_strlen(s));
 }

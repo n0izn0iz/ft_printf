@@ -6,7 +6,7 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:21:18 by nmeier            #+#    #+#             */
-/*   Updated: 2015/01/02 14:52:42 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/15 11:28:58 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include <stdlib.h>
 #include <wchar.h>
 #include <stdint.h>
+#include "misc.h"
 
-#include "libft.h"
 #include "ft_printf_impl.h"
 
 int			ft_wstrlen(wint_t *wstr)

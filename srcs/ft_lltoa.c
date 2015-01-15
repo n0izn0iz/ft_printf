@@ -6,14 +6,13 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:39:04 by nmeier            #+#    #+#             */
-/*   Updated: 2014/12/23 14:39:07 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/15 11:02:38 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
-#include "libft.h"
+#include "misc.h"
 
 int			ft_ll_len(long long int nbr)
 {

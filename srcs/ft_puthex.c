@@ -6,15 +6,15 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:21:09 by nmeier            #+#    #+#             */
-/*   Updated: 2015/01/14 13:09:56 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/15 11:28:23 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stdlib.h>
+#include "misc.h"
 #include "ft_vartoa.h"
 #include "ft_varlen.h"
-#include "libft.h"
 
 void			ft_puthex(uintmax_t hex, int caps)
 {

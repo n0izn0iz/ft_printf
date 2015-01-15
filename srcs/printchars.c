@@ -6,7 +6,7 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/02 15:07:47 by nmeier            #+#    #+#             */
-/*   Updated: 2015/01/14 12:58:11 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/15 11:29:39 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "ft_printf_impl.h"
 #include "ft_varlen.h"
 #include "ft_putvar.h"
-#include "libft.h"
+#include "misc.h"
 
 static inline void		ft_putnchar(int nbr, char c)
 {

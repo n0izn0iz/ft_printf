@@ -6,16 +6,16 @@
 /*   By: nmeier <nmeier@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/12/23 14:21:41 by nmeier            #+#    #+#             */
-/*   Updated: 2015/01/14 14:59:15 by nmeier           ###   ########.fr       */
+/*   Updated: 2015/01/15 11:12:28 by nmeier           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdarg.h>
 #include <stdlib.h>
 #include <wchar.h>
-#include "libft.h"
 #include "ft_printf_impl.h"
 #include "ft_printvar.h"
+#include "misc.h"
 
 int		fill_width(const char *str, t_spec_flags *flags)
 {
@@ -35,22 +35,27 @@ int		fill_flags(const char *str, t_spec_flags *flags)
 {
 	int i;
 
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (str[++i])
 	{
 		if (str[i] == '#')
 			flags->sharp = 1;
 		else if (str[i] == '+')
+		{
+			flags->space = 0;
 			flags->plus = 1;
+		}
 		else if (str[i] == '-')
+		{
+			flags->zero = 0;
 			flags->minus = 1;
-		else if (str[i] == ' ')
+		}
+		else if (str[i] == ' ' && !flags->plus)
 			flags->space = 1;
-		else if (str[i] == '0')
+		else if (str[i] == '0' && !flags->minus)
 			flags->zero = 1;
 		else
 			break ;
-		i++;
 	}
 	return (i);
 }
@@ -93,6 +98,7 @@ int		fill_precision(const char *str, t_spec_flags *flags)
 	if (str[i++] != '.')
 		return (0);
 	flags->precision_set = 1;
+	flags->zero = 0;
 	while (ft_isdigit(str[i]))
 		i++;
 	tmp = ft_strsub(str, 1, i);
